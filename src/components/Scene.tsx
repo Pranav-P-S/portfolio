@@ -174,9 +174,9 @@ function GenericParticles() {
   return (
     <points ref={pointsRef}>
       <bufferGeometry>
-        <bufferAttribute attach="attributes-position" count={3500} array={geometryData.positions} itemSize={3} />
-        <bufferAttribute attach="attributes-color" count={3500} array={geometryData.colors} itemSize={3} />
-        <bufferAttribute attach="attributes-aRandom" count={3500} array={geometryData.randoms} itemSize={1} />
+        <bufferAttribute attach="attributes-position" args={[geometryData.positions, 3]} />
+        <bufferAttribute attach="attributes-color" args={[geometryData.colors, 3]} />
+        <bufferAttribute attach="attributes-aRandom" args={[geometryData.randoms, 1]} />
       </bufferGeometry>
       <shaderMaterial
         ref={materialRef}
@@ -214,6 +214,8 @@ function LidarSweep() {
     if (geometries.length === 0) return;
 
     let mergedGeometry = mergeBufferGeometries(geometries);
+    
+    if (!mergedGeometry) return;
     
     mergedGeometry.computeBoundingBox();
     const box = mergedGeometry.boundingBox!;
@@ -317,18 +319,8 @@ function LidarSweep() {
   return (
     <points ref={pointsRef}>
       <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          count={geometryData.positions.length / 3}
-          array={geometryData.positions}
-          itemSize={3}
-        />
-        <bufferAttribute
-          attach="attributes-color"
-          count={geometryData.colors.length / 3}
-          array={geometryData.colors}
-          itemSize={3}
-        />
+        <bufferAttribute attach="attributes-position" args={[geometryData.positions, 3]} />
+        <bufferAttribute attach="attributes-color" args={[geometryData.colors, 3]} />
       </bufferGeometry>
       <shaderMaterial
         ref={materialRef}
